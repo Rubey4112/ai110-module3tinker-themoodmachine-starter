@@ -50,6 +50,11 @@ SAMPLE_POSTS = [
     "This is fine",
     "So excited for the weekend",
     "I am not happy about this",
+    "I absolutely love sitting in traffic for two hours 😍",
+    "lowkey proud of myself ngl 🥲",
+    "it's fine whatever I didn't want to go anyway",
+    "no cap today was actually so good??",
+    "exhausted but we out here 💀",
 ]
 
 # Human labels for each post above.
@@ -65,6 +70,11 @@ TRUE_LABELS = [
     "neutral",   # "This is fine"
     "positive",  # "So excited for the weekend"
     "negative",  # "I am not happy about this"
+    "negative",  # "I absolutely love sitting in traffic for two hours 😍" (sarcasm)
+    "mixed",     # "lowkey proud of myself ngl 🥲" (proud but understated/bittersweet)
+    "negative",  # "it's fine whatever I didn't want to go anyway" (subtle passive disappointment)
+    "positive",  # "no cap today was actually so good??" (slang, genuine surprise/positivity)
+    "mixed",     # "exhausted but we out here 💀" (tired but persevering)
 ]
 
 # TODO: Add 5-10 more posts and labels.
