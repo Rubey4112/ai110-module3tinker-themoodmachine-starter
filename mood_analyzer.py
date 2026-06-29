@@ -110,7 +110,18 @@ class MoodAnalyzer:
         #   2. Return "positive" if the score is above 0.
         #   3. Return "negative" if the score is below 0.
         #   4. Return "neutral" otherwise.
-        pass
+        score = self.score_text(text)
+
+        if score >= 2:
+            return "positive"
+        elif score <= -2:
+            return "negative"
+        elif score == 0:
+            return "neutral"
+        elif abs(score) < 2:
+            return "mixed"
+        else:
+            return "error"
 
     # ---------------------------------------------------------------------
     # Explanations (optional but recommended)
