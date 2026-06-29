@@ -115,8 +115,17 @@ class MoodAnalyzer:
         #
         # Hint: if you implement negation, you may want to look at pairs of tokens,
         # like ("not", "happy") or ("never", "fun").
-        pass
+        tokens = self.preprocess(text)
 
+        score = 0
+        for token in tokens:
+            if token in self.negative_words:
+                score -= 1
+            elif token in self.positive_words:
+                score += 1
+            else:
+                pass
+        return score
     # ---------------------------------------------------------------------
     # Label prediction
     # ---------------------------------------------------------------------
@@ -144,13 +153,13 @@ class MoodAnalyzer:
         #   4. Return "neutral" otherwise.
         score = self.score_text(text)
 
-        if score >= 2:
+        if score >= 1:
             return "positive"
-        elif score <= -2:
+        elif score <= -1:
             return "negative"
         elif score == 0:
             return "neutral"
-        elif abs(score) < 2:
+        elif abs(score) < 1:
             return "mixed"
         else:
             return "error"
