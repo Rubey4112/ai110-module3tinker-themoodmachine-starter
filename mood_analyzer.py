@@ -9,9 +9,34 @@ This class starts with very simple logic:
   - Convert that score into a mood label
 """
 
+import string
 from typing import List, Dict, Tuple, Optional
 
 from dataset import POSITIVE_WORDS, NEGATIVE_WORDS
+
+# Common English words that carry little mood signal.
+# Add or remove entries here to tune what gets filtered out.
+STOP_WORDS = [
+    "a", "an", "the",
+    "i", "me", "my", "myself",
+    "you", "your", "yourself",
+    "he", "him", "his",
+    "she", "her", "hers",
+    "we", "us", "our",
+    "they", "them", "their",
+    "it", "its",
+    "this", "that", "these", "those",
+    "is", "are", "was", "were", "be", "been", "being",
+    "have", "has", "had",
+    "do", "does", "did",
+    "will", "would", "shall", "should",
+    "can", "could", "may", "might", "must",
+    "and", "or", "but", "if", "in", "on", "at",
+    "to", "for", "of", "with", "by", "from",
+    "about", "as", "into", "through", "during",
+    "so", "then", "than", "because", "while",
+    "am", "very", "just", "also",
+]
 
 
 class MoodAnalyzer:
@@ -23,14 +48,17 @@ class MoodAnalyzer:
         self,
         positive_words: Optional[List[str]] = None,
         negative_words: Optional[List[str]] = None,
+        stop_words: Optional[List[str]] = None,
     ) -> None:
         # Use the default lists from dataset.py if none are provided.
         positive_words = positive_words if positive_words is not None else POSITIVE_WORDS
         negative_words = negative_words if negative_words is not None else NEGATIVE_WORDS
+        stop_words = stop_words if stop_words is not None else STOP_WORDS
 
         # Store as sets for faster lookup.
         self.positive_words = set(w.lower() for w in positive_words)
         self.negative_words = set(w.lower() for w in negative_words)
+        self.stop_words = set(w.lower() for w in stop_words)
 
     # ---------------------------------------------------------------------
     # Preprocessing
@@ -40,20 +68,24 @@ class MoodAnalyzer:
         """
         Convert raw text into a list of tokens the model can work with.
 
-        TODO: Improve this method.
-
-        Right now, it does the minimum:
+        Steps:
           - Strips leading and trailing whitespace
           - Converts everything to lowercase
           - Splits on spaces
+          - Removes stop words (see STOP_WORDS at the top of this file)
 
-        Ideas to improve:
+        Ideas to improve further:
           - Remove punctuation
           - Handle simple emojis separately (":)", ":-(", "🥲", "😂")
           - Normalize repeated characters ("soooo" -> "soo")
         """
-        cleaned = text.strip().lower()
-        tokens = cleaned.split()
+        strip_punct = str.maketrans("", "", string.punctuation)
+        tokens = []
+        for token in text.strip().lower().split():
+            token = token.translate(strip_punct)
+            if token and token not in self.stop_words:
+                tokens.append(token)
+
 
         return tokens
 
