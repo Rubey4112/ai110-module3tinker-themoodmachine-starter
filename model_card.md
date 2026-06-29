@@ -5,35 +5,35 @@ This model card is for the Mood Machine project, which includes **two** versions
 1. A **rule based model** implemented in `mood_analyzer.py`
 2. A **machine learning model** implemented in `ml_experiments.py` using scikit learn
 
-You may complete this model card for whichever version you used, or compare both if you explored them.
-
 ## 1. Model Overview
 
 **Model type:**  
-Describe whether you used the rule based model, the ML model, or both.  
-Example: “I used the rule based model only” or “I compared both models.”
+
+I compared both the rule based model and the ML model.
 
 **Intended purpose:**  
-What is this model trying to do?  
-Example: classify short text messages as moods like positive, negative, neutral, or mixed.
+
+The models both try to classify a short text messages by its moods into four catergories: positive, negative, neutral, or mixed.
 
 **How it works (brief):**  
-For the rule based version, describe the scoring rules you created.  
-For the ML version, describe how training works at a high level (no math needed).
+
+For the rule based version. A score of +1 is add if the word is positive, and -1 if the word is negative. If there is a negation word prior, then the score is inverted.
+
+The ML version is trained in 1000 iterations on the sample sentences and their corresponding labels.
 
 
 
 ## 2. Data
 
 **Dataset description:**  
-Summarize how many posts are in `SAMPLE_POSTS` and how you added new ones.
+
+There are 11 posts total. I added 5 posts that focuesed on sarcasm and slang and a emoji.
 
 **Labeling process:**  
-Explain how you chose labels for your new examples.  
-Mention any posts that were hard to label or could have multiple valid labels.
+
+There wasn't any hard post to label. Additionaly, if there were any, they can be label as "mixed" since it is a catch-all label.
 
 **Important characteristics of your dataset:**  
-Examples you might include:  
 
 - Contains slang or emojis  
 - Includes sarcasm  
@@ -43,24 +43,30 @@ Examples you might include:
 **Possible issues with the dataset:**  
 Think about imbalance, ambiguity, or missing kinds of language.
 
+This dataset is really small, only 11. The slang used are mainly Gen-Z so different slang might not be categorize correctly.
+
 ## 3. How the Rule Based Model Works (if used)
 
 **Your scoring rules:**  
 Describe the modeling choices you made.  
 Examples:  
 
-- How positive and negative words affect score  
-- Negation rules you added  
-- Weighted words  
-- Emoji handling  
-- Threshold decisions for labels
+- Positive and negative words +1 and -1 to the score respectively.
+- Negation word before the a positive or negative word invert the score
+- No weighted words  
+- No Emoji handling  
+- Threshold decisions for labels:
+    - Positive if score >= 1
+    - Negative if score <= 1
+    - Neutral if score == 0
+    - No mixed currently
 
 **Strengths of this approach:**  
 Where does it behave predictably or reasonably well?
 
 **Weaknesses of this approach:**  
-Where does it fail?  
-Examples: sarcasm, subtlety, mixed moods, unfamiliar slang.
+
+Sarcasm, subtlety, mixed moods, unfamiliar slang all caused the rule based classifier to fail.
 
 ## 4. How the ML Model Works (if used)
 
